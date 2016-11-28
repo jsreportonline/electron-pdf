@@ -12,7 +12,7 @@ WORKDIR /usr/src/app
 COPY package.json /usr/src/app/
 RUN npm install --production
 
-RUN export DISPLAY=':99.0'
+ENV DISPLAY=:99.0
 RUN Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 
 COPY . /usr/src/app
