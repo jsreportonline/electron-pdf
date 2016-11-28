@@ -18,4 +18,4 @@ COPY patch /usr/src/app
 
 HEALTHCHECK CMD curl --fail http://localhost:8000 || exit 1
 
-CMD Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & export DISPLAY=:9.0 && node index.js
+CMD Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & export DISPLAY=:99.0 && node index.js
