@@ -13,7 +13,6 @@ COPY package.json /usr/src/app/
 RUN npm install --production
 
 ENV DISPLAY=:99.0
-RUN Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 
 COPY . /usr/src/app
 
@@ -21,4 +20,5 @@ COPY patch /usr/src/app
 
 HEALTHCHECK CMD curl --fail http://localhost:8000 || exit 1
 
+CMD [ "Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &" ]
 CMD [ "node", "index.js" ]
