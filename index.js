@@ -4,7 +4,7 @@ const convertFactory = require('electron-html-to')
 const conversion = convertFactory({
   converterPath: convertFactory.converters.PDF,
   numberOfWorkers: 2,
-  timeout: 60000,
+  timeout: 20000,
   tmpDir: process.env.temp
 })
 
