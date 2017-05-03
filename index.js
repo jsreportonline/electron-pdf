@@ -1,4 +1,5 @@
 const http = require('http')
+const toArray = require('stream-to-array')
 const convertFactory = require('electron-html-to')
 
 const conversion = convertFactory({
@@ -21,6 +22,18 @@ const server = http.createServer((req, res) => {
     data += chunk.toString()
   })
 
+  const error = (err) => {
+    res.statusCode = 400
+    res.setHeader('Content-Type', 'application/json')
+
+    return res.end(JSON.stringify({
+      error: {
+        message: err.message,
+        stack: err.stack
+      }
+    }))
+  }
+
   req.on('end', function () {
     let opts
     try {
@@ -35,18 +48,25 @@ const server = http.createServer((req, res) => {
 
     conversion(opts, (err, result) => {
       if (err) {
-        res.statusCode = 400
-        res.setHeader('Content-Type', 'application/json')
-        return res.end(JSON.stringify({
-          error: {
-            message: 'Error when executing electron ' + err.message,
-            stack: err.stack
-          }
-        }))
+        return error(err)
       }
 
       console.log('conversion finished')
-      result.stream.pipe(res)
+
+      toArray(result.stream, (err, arr) => {
+        if (err) {
+          return error(err)
+        }
+
+        console.log('sending response')
+
+        res.statusCode = 200
+        res.setHeader('Content-Type', 'application/json')
+
+        delete result.stream
+        result.content = Buffer.concat(arr).toString('base64')
+        res.end(JSON.stringify(result))
+      })
     })
   })
 })
