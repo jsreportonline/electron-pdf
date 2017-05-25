@@ -22,16 +22,23 @@ const server = http.createServer((req, res) => {
     data += chunk.toString()
   })
 
-  const error = (err) => {
-    res.statusCode = 400
-    res.setHeader('Content-Type', 'application/json')
+  const error = (err, critical) => {
+    if (critical === true) {
+      res.statusCode = 500
+      res.setHeader('Content-Type', 'text/plain')
 
-    return res.end(JSON.stringify({
-      error: {
-        message: err.message,
-        stack: err.stack
-      }
-    }))
+      res.end(err.stack)
+    } else {
+      res.statusCode = 400
+      res.setHeader('Content-Type', 'application/json')
+
+      res.end(JSON.stringify({
+        error: {
+          message: err.message,
+          stack: err.stack
+        }
+      }))
+    }
   }
 
   req.on('end', function () {
@@ -40,22 +47,19 @@ const server = http.createServer((req, res) => {
       opts = JSON.parse(data)
     } catch (e) {
       console.error(e)
-      res.statusCode = 500
-      res.setHeader('Content-Type', 'text/plain')
-
-      return res.end(e.stack)
+      return error(e, true)
     }
 
     conversion(opts, (err, result) => {
       if (err) {
-        return error(err)
+        return error(err, true)
       }
 
       console.log('conversion finished')
 
       toArray(result.stream, (err, arr) => {
         if (err) {
-          return error(err)
+          return error(err, true)
         }
 
         console.log('sending response')
