@@ -20,6 +20,9 @@ HEALTHCHECK CMD curl --fail http://localhost:8000 || exit 1
 
 # exporting the display env var for use in the electron process
 ENV DISPLAY :99
+ENV DEBUG electron-html-to,electron-html-to:*
+ENV ELECTRON_ENABLE_LOGGING true
+ENV ELECTRON_HTML_TO_STDSTREAMS true
 
 # startup script to launch xvfb correctly along with our app:
 # - we ensure that lock files created by Xvfb server (stored at /tmp/ with file names like /tmp/.X99-lock)
