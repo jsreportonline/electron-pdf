@@ -3,6 +3,7 @@ const toArray = require('stream-to-array')
 const convertFactory = require('electron-html-to')
 
 const conversion = convertFactory({
+  electronArgs: ['--disable-gpu'],
   converterPath: convertFactory.converters.PDF,
   numberOfWorkers: 2,
   timeout: 20000,
