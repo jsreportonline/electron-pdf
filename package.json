@@ -19,7 +19,7 @@
   "homepage": "https://github.com/jsreportonline/electron-pdf#readme",
   "dependencies": {
     "electron": "1.6.7",
-    "electron-html-to": "2.5.1",
+    "electron-html-to": "2.6.0",
     "stream-to-array": "2.3.0"
   },
   "devDependencies": {
