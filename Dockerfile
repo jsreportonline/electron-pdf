@@ -1,4 +1,4 @@
-FROM ubuntu:yakkety
+FROM ubuntu:artful
 MAINTAINER Jan Blaha
 EXPOSE 8000
 
