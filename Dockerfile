@@ -1,4 +1,4 @@
-FROM ubuntu:artful
+FROM ubuntu:xenial
 MAINTAINER Jan Blaha
 EXPOSE 8000
 
